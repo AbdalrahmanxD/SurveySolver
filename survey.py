@@ -45,12 +45,10 @@ def open_browser(index):
 
     try:
         # Wait for the login button to appear
-        login_button = WebDriverWait(driver, 15).until(EC.presence_of_element_located(
-            (By.CSS_SELECTOR, "button[ng-click='ViewModel.LoadSurveysByQID();']")
-        ))
+
 
         # **Scroll down by 700 pixels smoothly**
-        driver.execute_script("window.scrollBy(0, 700);")
+        driver.execute_script("window.scrollBy(0, 1000);")
         print(f"🔽 Scrolled down in browser {index}")
 
         # Step 1: Get a unique number
@@ -61,6 +59,7 @@ def open_browser(index):
 
         # Step 3: Type the ID in the input field using Selenium
         type_id_in_field(driver, number)
+        driver.execute_script("window.scrollBy(0, 150);")
 
         # Step 4: Select the CAPTCHA field to make it easier for the user
         select_captcha_field(driver)
@@ -70,12 +69,17 @@ def open_browser(index):
 
         # Step 6: **Wait for button click before proceeding**
         wait_for_button_click(driver)
+        while True:
 
-        # Step 7: **Check for alert after button click**
-        monitor_alert_and_update_number(driver, index)
 
-        # Step 8: **Click `b.ng-binding` and handle new tab**
-        handle_ng_binding_click(driver)
+            # Step 7: **Check for alert after button click**
+            monitor_alert_and_update_number(driver, index)
+            login_button = WebDriverWait(driver, 15).until(EC.presence_of_element_located(
+                (By.CSS_SELECTOR, "button[ng-click='ViewModel.LoadSurveysByQID();']")
+            ))
+            login_button.click()
+            # Step 8: **Click `b.ng-binding` and handle new tab**
+            handle_ng_binding_click(driver)
 
     except Exception as e:
         print(f"⛛ Error in browser {index}: {str(e)}")
