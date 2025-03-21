@@ -177,7 +177,7 @@ def monitor_alert_and_update_number(driver, index):
         except:
             pass
 
-       # time.sleep(0.5)
+        time.sleep(0.5)
         attempts += 1
 
     print(f"⛔ No alert detected in browser {index} after {max_attempts} attempts.")
@@ -202,13 +202,13 @@ def handle_ng_binding_click(driver,index):
             lang_button.click()
             print("✅ Clicked language selection button.")
             paths = ["//*[@id='qs24225721']/div[2]/div/div[2]/div/div/table/tbody",
-     "//*[@id='qs24225722']/div[2]/div/div[2]/div/div/table/tbody",
-    "//*[@id='qs24225724']/div[2]/div/div[2]/div/div/table/tbody",
-    "//*[@id='qs24225732']/div/div/div[2]/div/div/table/tbody",
-    "//*[@id='qs24225729']/div/div/div[2]/div/div/table/tbody",
-    "//*[@id='qs24225733']/div/div/div[2]/div/div/table/tbody",
-    "//*[@id='qs24225726']/div/div/div[2]/div/div/table/tbody"
-]
+                     "//*[@id='qs24225722']/div[2]/div/div[2]/div/div/table/tbody",
+                     "//*[@id='qs24225724']/div[2]/div/div[2]/div/div/table/tbody",
+                     "//*[@id='qs24225732']/div/div/div[2]/div/div/table/tbody",
+                     "//*[@id='qs24225729']/div/div/div[2]/div/div/table/tbody",
+                     "//*[@id='qs24225733']/div/div/div[2]/div/div/table/tbody",
+                     "//*[@id='qs24225726']/div/div/div[2]/div/div/table/tbody"
+                     ]
             # **Click `//*[@id='cmdGo']`**
             go_button = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='cmdGo']")))
             go_button.click()
@@ -218,11 +218,11 @@ def handle_ng_binding_click(driver,index):
                 go_button.click()
                 print("✅ Did the",  paths.index(path),"th page")
 
-        
+
             random_xpaths = ["//ul[.//*[@id='o24225727177400070']]","//div[contains(@class, 'ss-question-inner')][.//*[@id='o24225723177400054']]"]
             for path in random_xpaths:
                 click_random_radio_button(driver,path,index)
-                
+
             go_button = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='cmdGo']")))
             go_button.click()
             print("✅ Done")
@@ -268,7 +268,7 @@ def click_random_radio_button(driver, xpath, seed=None):
         radio_input = random_label.find_element(By.XPATH, ".//input[@type='radio']")
 
         # Check if the radio input's id is 'o24225727177400057'
-        if radio_input.get_attribute('id') != 'o24225727177400057':
+        if radio_input.get_attribute('id') != 'o24225727177400057' or radio_input.get_attribute('id') != 'o24225727177400064' or radio_input.get_attribute != 'o24225723177400054':
             # Click the radio input field if it's not the excluded one
             radio_input.click()
             break
