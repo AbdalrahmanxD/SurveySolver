@@ -1,4 +1,4 @@
-#TODO automate captcha, make sure it gets another id if there are no surveys to do or if its done with the survey
+
 import threading
 import time
 import pyautogui
@@ -213,61 +213,21 @@ def handle_ng_binding_click(driver,index):
             go_button = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='cmdGo']")))
             go_button.click()
             for path in paths:
-             #   print(path)
-                # **Click `//*[@id='cmdGo']`**
-              #  go_button = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='cmdGo']")))
-               # go_button.click()
-               # print("🚀 Clicked 'Go' button.")
                 click_table_random_td(driver,path)
                 go_button = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='cmdGo']")))
                 go_button.click()
                 print("✅ Did the",  paths.index(path),"th page")
 
-
-        # **Click `//*[@id='cmdGo']`**
-         #   go_button = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='cmdGo']")))
-         #   go_button.click()
-         #   print("🚀 Clicked 'Go' button.")
-         #   click_table_first_td(driver,"//*[@id='qs24225721']/div[2]/div/div[2]/div/div/table/tbody")
-         #   print("✅ Did the first page")
-            #go_button = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='cmdGo']")))
-            #go_button.click()
-            #print("🚀 Clicked 'Go' button.")
-            #click_table_first_td(driver,"//*[@id='qs24225722']/div[2]/div/div[2]/div/div/table/tbody")
-            #print("✅ Did the second page")
-            #go_button = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='cmdGo']")))
-            #go_button.click()
-            #click_table_first_td(driver,"//*[@id='qs24225724']/div[2]/div/div[2]/div/div/table/tbody")
-            #print("✅ Did the third page")
-            #go_button = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='cmdGo']")))
-            #go_button.click()
-          # click_table_first_td(driver,"//*[@id='qs24225732']/div/div/div[2]/div/div/table/tbody")
-          # print("✅ Did the fourth page")
-          # go_button = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='cmdGo']")))
-          # go_button.click()
-          # click_table_first_td(driver,"//*[@id='qs24225729']/div/div/div[2]/div/div/table/tbody")
-          # print("✅ Did the fifth page")
-          # go_button = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='cmdGo']")))
-          # go_button.click()
-          # click_table_first_td(driver,"//*[@id='qs24225733']/div/div/div[2]/div/div/table/tbody")
-          # print("✅ Did the sixth page")
-          # go_button = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='cmdGo']")))
-          # go_button.click()
-          # click_table_first_td(driver,"//*[@id='qs24225726']/div/div/div[2]/div/div/table/tbody")
-          # print("✅ Did the seventh page")
-          # go_button = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='cmdGo']")))
-          # go_button.click()
+        
             random_xpaths = ["//ul[.//*[@id='o24225727177400070']]","//div[contains(@class, 'ss-question-inner')][.//*[@id='o24225723177400054']]"]
             for path in random_xpaths:
                 click_random_radio_button(driver,path,index)
-        #    click_random_radio_button(driver,"//ul[.//*[@id='o24225727177400070']]",seed=i)
-
-  #          click_random_radio_button(drivf8cer,"//div[contains(@class, 'ss-question-inner')][.//*[@id='o24225723177400054']]",seed=i)
+                
             go_button = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='cmdGo']")))
             go_button.click()
             print("✅ Done")
             # Close the current tab and go back to the original tab
-            #TODO check if this works
+
             driver.close()
             print("🔴 Closed the current tab.")
             driver.switch_to.window(driver.window_handles[0])  # Switch back to the original tab
@@ -329,31 +289,10 @@ def click_table_random_td(driver,xpath):
 
     except Exception as e:
         print(f"⛔ Error clicking table cells: {e}")
-#
-# def click_table_random_td(driver, xpath):
-#     try:
-#         tbody_xpath = xpath
-#         rows = WebDriverWait(driver, 5).until(EC.presence_of_all_elements_located((By.XPATH, f"{tbody_xpath}/tr")))
-#
-#         for row in rows:
-#             # Find all <td> elements in the current row
-#             td_elements = row.find_elements(By.XPATH, "./td")
-#
-#             # If there are any <td> elements, click a random one
-#             if td_elements:
-#                 # Generate a random index between 1 and the number of <td> elements
-#                 random_index = random.randint(1, len(td_elements)) - 1  # -1 to adjust for 0-based index
-# #                random_index = random.randint(1, len(td_elements)) - 1  # -1 to adjust for 0-based index
-#
-#                 # Click the randomly selected <td>
-#                 td_elements[random_index].click()
-#                 print(f"✅ Clicked random <td> (index {random_index+1}) inside <tr>.")
-#                 time.sleep(0.5)  # Small delay between clicks
-#             else:
-#                 print("⛛ No <td> elements found in this row.")
-#
-#     except Exception as e:
-#         print(f"⛔ Error clicking table cells: {e}")
+
+
+
+
 
 # Create and start threads for each browser
 threads = []
