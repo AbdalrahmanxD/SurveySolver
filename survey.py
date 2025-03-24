@@ -1,4 +1,3 @@
-
 import threading
 import time
 import pyautogui
@@ -44,8 +43,6 @@ def open_browser(index):
     driver.get(FINALURL)
 
     try:
-        # Wait for the login button to appear
-
 
         # **Scroll down by 1000 pixels smoothly**
         driver.execute_script("window.scrollBy(0, 1000);")
@@ -74,10 +71,7 @@ def open_browser(index):
 
             # Step 7: **Check for alert after button click**
             monitor_alert_and_update_number(driver, index)
-            login_button = WebDriverWait(driver, 15).until(EC.presence_of_element_located(
-                (By.CSS_SELECTOR, "button[ng-click='ViewModel.LoadSurveysByQID();']")
-            ))
-            login_button.click()
+     
             # Step 8: **Click `b.ng-binding` and handle new tab**
             handle_ng_binding_click(driver,index)
 
@@ -156,16 +150,14 @@ def wait_for_button_click(driver):
 
 # Function to check for the specific alert and change the ID number if found
 def monitor_alert_and_update_number(driver, index):
-    attempts = 0
-    max_attempts = 10
-
-    while attempts < max_attempts:
+    while True:
         try:
             alert_element = driver.find_element(By.XPATH, "//div[contains(@ng-if, 'ViewModel.Administrations.length == 0') and contains(@class, 'alert')]")
 
             if alert_element:
                 print(f"⚠️ Alert detected in browser {index}! Changing the ID number...")
 
+                # Get a new number
                 number = get_unique_number(index)
                 if number:
                     input_field = driver.find_element(By.XPATH, "//*[@id='QID']")
@@ -173,15 +165,16 @@ def monitor_alert_and_update_number(driver, index):
                     input_field.send_keys(number)
                     print(f"🔢 New number inserted in browser {index}: {number}")
 
-            return
-        except:
-            pass
+                    # Re-click the login button to restart the process
+                    login_button = driver.find_element(By.CSS_SELECTOR, "button[ng-click='ViewModel.LoadSurveysByQID();']")
+                    login_button.click()
+                    print(f"🔄 Retrying with new ID {number}")
+                    return  # Stop further attempts since a new ID was used
 
-        time.sleep(0.5)
-        attempts += 1
+        except Exception:
+            pass  # Ignore errors and retry
 
-    print(f"⛔ No alert detected in browser {index} after {max_attempts} attempts.")
-
+  
 
 # **Function to click `b.ng-binding`, switch to the new tab, and proceed**
 def handle_ng_binding_click(driver,index):
@@ -213,7 +206,7 @@ def handle_ng_binding_click(driver,index):
             go_button = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='cmdGo']")))
             go_button.click()
             for path in paths:
-                click_table_random_td(driver,path)
+                click_table_random_td(driver,path,index)
                 go_button = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='cmdGo']")))
                 go_button.click()
                 print("✅ Did the",  paths.index(path),"th page")
@@ -227,7 +220,7 @@ def handle_ng_binding_click(driver,index):
             go_button.click()
             print("✅ Done")
             # Close the current tab and go back to the original tab
-
+            WebDriverWait(driver,5).until(EC.presence_of_element_located((By.XPATH,"/html/body/form/div[3]/div/div/div/div/div/div[2]/div/div[1]/span/strong/span")))
             driver.close()
             print("🔴 Closed the current tab.")
             driver.switch_to.window(driver.window_handles[0])  # Switch back to the original tab
@@ -242,9 +235,10 @@ def handle_ng_binding_click(driver,index):
                 input_field.clear()  # Clear the old number
                 input_field.send_keys(new_number)  # Type the new number
                 print(f"⌨️ Typed new number '{new_number}' in the input field.")
-
-                # Call the process again to continue the workflow
-                handle_ng_binding_click(driver,index)  # Recursive call to continue with the new number
+     # Call the process again to continue the workflow
+                login_button = driver.find_element(By.CSS_SELECTOR, "button[ng-click='ViewModel.LoadSurveysByQID();']")
+                login_button.click()
+                return  # Recursive call to continue with the new number
     except Exception as e:
         print(f"⛔ Failed to complete the process: {e}")
 
@@ -274,22 +268,36 @@ def click_random_radio_button(driver, xpath, seed=None):
             break
 
     # Optionally, wait to see the effect (if needed)
-    time.sleep(2)
+    #time.sleep(2)
+def click_table_random_td(driver,xpath,seed=None):
 
-def click_table_random_td(driver,xpath):
     try:
+        if seed is not None:
+            random.seed(seed)
+
         tbody_xpath = xpath
         rows = WebDriverWait(driver, 5).until(EC.presence_of_all_elements_located((By.XPATH, f"{tbody_xpath}/tr")))
 
         for row in rows:
-            first_td = row.find_element(By.XPATH, "./td[" + str(random.randrange(1, 4)) + "]")  # Get first `<td>` inside `<tr>`
+            result = random.randrange(1, 3)
+
+
+
+            if xpath == "//*[@id='qs24225726']/div/div/div[2]/div/div/table/tbody":
+                result = 3
+            if xpath == "//*[@id='qs24225721']/div[2]/div/div[2]/div/div/table/tbody":
+                if rows.index(row) == 12:
+                    result = 3
+
+
+            first_td = row.find_element(By.XPATH, "./td[" + str(result) + "]")  # Get first `<td>` inside `<tr>`
+
             first_td.click()
             print("✅ Clicked first <td> inside <tr>.")
             time.sleep(0.5)  # Small delay between clicks
 
     except Exception as e:
         print(f"⛔ Error clicking table cells: {e}")
-
 
 
 
