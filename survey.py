@@ -283,11 +283,8 @@ def click_table_random_td(driver,xpath,seed=None):
 
 
 
-            if xpath == "//*[@id='qs24225726']/div/div/div[2]/div/div/table/tbody":
+            if xpath == "//*[@id='qs24225726']/div/div/div[2]/div/div/table/tbody" or (xpath == "//*[@id='qs24225721']/div[2]/div/div[2]/div/div/table/tbody" and rows.index(row) == 15):
                 result = 3
-            if xpath == "//*[@id='qs24225721']/div[2]/div/div[2]/div/div/table/tbody":
-                if rows.index(row) == 12:
-                    result = 3
 
 
             first_td = row.find_element(By.XPATH, "./td[" + str(result) + "]")  # Get first `<td>` inside `<tr>`
