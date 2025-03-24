@@ -71,7 +71,7 @@ def open_browser(index):
 
             # Step 7: **Check for alert after button click**
             monitor_alert_and_update_number(driver, index)
-     
+
             # Step 8: **Click `b.ng-binding` and handle new tab**
             handle_ng_binding_click(driver,index)
 
@@ -174,7 +174,7 @@ def monitor_alert_and_update_number(driver, index):
         except Exception:
             pass  # Ignore errors and retry
 
-  
+
 
 # **Function to click `b.ng-binding`, switch to the new tab, and proceed**
 def handle_ng_binding_click(driver,index):
@@ -235,7 +235,7 @@ def handle_ng_binding_click(driver,index):
                 input_field.clear()  # Clear the old number
                 input_field.send_keys(new_number)  # Type the new number
                 print(f"⌨️ Typed new number '{new_number}' in the input field.")
-     # Call the process again to continue the workflow
+                # Call the process again to continue the workflow
                 login_button = driver.find_element(By.CSS_SELECTOR, "button[ng-click='ViewModel.LoadSurveysByQID();']")
                 login_button.click()
                 return  # Recursive call to continue with the new number
@@ -282,7 +282,6 @@ def click_table_random_td(driver,xpath,seed=None):
             result = random.randrange(1, 3)
 
 
-
             if xpath == "//*[@id='qs24225726']/div/div/div[2]/div/div/table/tbody" or (xpath == "//*[@id='qs24225721']/div[2]/div/div[2]/div/div/table/tbody" and rows.index(row) == 15):
                 result = 3
 
@@ -295,7 +294,6 @@ def click_table_random_td(driver,xpath,seed=None):
 
     except Exception as e:
         print(f"⛔ Error clicking table cells: {e}")
-
 
 
 
